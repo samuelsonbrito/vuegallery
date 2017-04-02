@@ -1,6 +1,7 @@
 # vuegallery
 
-> A Vue.js project
+> Meu primeiro projeto Vue.js 
+> Projeto modelo para futuros projetos :)
 
 ## Build Setup
 
