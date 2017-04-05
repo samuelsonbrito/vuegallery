@@ -7,9 +7,9 @@
     <ul class="lista-fotos">
       <li class="lista-fotos-item" v-for="foto of fotosComFiltro">
 
-      <meu-painel :titulo="foto.titulo">
-          <imagem-responsiva :url="foto.url" :titulo="foto.titulo"/>     
-      </meu-painel>
+        <meu-painel :titulo="foto.titulo">
+            <imagem-responsiva :url="foto.url" :titulo="foto.titulo"/>     
+        </meu-painel>
 
       </li>
     </ul>
@@ -17,6 +17,7 @@
 </template>
 
 <script>
+
 import Painel from '../shared/painel/Painel.vue';
 import ImagemResponsiva from '../shared/imagem-responsiva/ImagemResponsiva.vue';
 
@@ -53,6 +54,7 @@ export default {
   }
   
 }
+
 </script>
 
 <style>
@@ -60,8 +62,6 @@ export default {
   .centralizado {
     text-align: center;
   }
-
-
 
   .lista-fotos {
     list-style: none;
@@ -76,5 +76,4 @@ export default {
     width: 100%;
   }
 
- 
 </style>

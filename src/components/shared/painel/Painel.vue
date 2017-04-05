@@ -22,6 +22,7 @@ export default {
     }
 
 }
+
 </script>
 
 <style scoped>
@@ -58,6 +59,5 @@ export default {
   .painel-fade-enter-active, .painel-fade-leave-active{
     transition: opacity .4s;
   }
-
 
 </style>
