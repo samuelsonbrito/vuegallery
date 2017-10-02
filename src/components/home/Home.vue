@@ -8,7 +8,7 @@
       <li class="lista-fotos-item" v-for="foto of fotosComFiltro" :key="foto.titulo">
 
         <meu-painel :titulo="foto.titulo">
-            <imagem-responsiva :url="foto.url" :titulo="foto.titulo" v-meu-transform /> 
+            <imagem-responsiva :url="foto.url" :titulo="foto.titulo" v-meu-transform:scale.animacao="1.2" /> 
             <meu-botao tipo="button" rotulo="Remover" @botaoAtivado="remove(foto)" :confirmacao="true" estilo="perigo"/>    
         </meu-painel>
 
@@ -22,6 +22,7 @@
 import Painel from '../shared/painel/Painel.vue';
 import ImagemResponsiva from '../shared/imagem-responsiva/ImagemResponsiva.vue';
 import Botao from '../shared/botao/Botao.vue';
+import Transform from '../../directives/Transform';
 
 export default {
 
@@ -29,6 +30,10 @@ export default {
     'meu-painel': Painel,
     'imagem-responsiva': ImagemResponsiva,
     'meu-botao': Botao
+  },
+
+  directives:{
+    'meu-transform': Transform
   },
 
   data(){
@@ -61,7 +66,7 @@ export default {
   },
 
   created(){
-    this.$http.get('http://localhost:3000/v1/fotos')
+    this.$http.get('http://localhost/api-php/foto/listar')
     .then(res => res.json())
     .then(fotos => this.fotos = fotos, err => console.log(err));
   }
