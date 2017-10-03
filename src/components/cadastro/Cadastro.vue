@@ -1,23 +1,23 @@
 <template>
     <div>
         <h1 class="centralizado">Cadastro</h1>
-        <h2 class="centralizado"></h2>
+        <h2 class="centralizado">{{foto.titulo}}</h2>
 
-        <form>
+        <form @submit.prevent="grava()">
             <div class="controle">
                 <label for="titulo">TÍTULO</label>
-                <input id="titulo" autocomplete="off">
+                <input id="titulo" autocomplete="off" v-model="foto.titulo">
             </div>
 
             <div class="controle">
                 <label for="url">URL</label>
-                <input id="url" autocomplete="off">
-                <imagem-responsiva/>
+                <input id="url" autocomplete="off" @input="foto.url = $event.target.value" :value="foto.url">
+                <imagem-responsiva :url="foto.url" :titulo="foto.titulo"/>
             </div>
 
             <div class="controle">
                 <label for="descricao">DESCRIÇÃO</label>
-                <textarea id="descricao" autocomplete="off"></textarea>
+                <textarea id="descricao" autocomplete="off" @input="foto.descricao = $event.target.value" :value="foto.descricao"></textarea>
             </div>
 
             <div class="centralizado">
@@ -33,6 +33,7 @@
 
 import ImagemResponsiva from '../shared/imagem-responsiva/ImagemResponsiva.vue'
 import Botao from '../shared/botao/Botao.vue';
+import Foto from '../../domain/foto/Foto';
 
 export default {
 
@@ -40,6 +41,30 @@ export default {
 
     'imagem-responsiva': ImagemResponsiva, 
     'meu-botao': Botao
+  },
+
+  data(){
+    return {
+      foto: new Foto()
+
+    }
+  },
+
+  methods: {
+
+    grava(){
+
+//console.log('formulario submetido');
+      this.$http.post('http://localhost/api-php/foto/add',this.foto)
+      .then(() => this.foto = new Foto(), err => console.log(err));
+
+      console.log(this.foto);
+
+      this.foto = new Foto()
+
+
+    }
+
   }
 }
 
