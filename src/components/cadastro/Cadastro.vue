@@ -3,6 +3,8 @@
         <h1 class="centralizado">Cadastro</h1>
         <h2 class="centralizado">{{foto.titulo}}</h2>
 
+        <p class="centralizado" v-show="mensagem">{{mensagem}}</p>
+
         <form @submit.prevent="grava()">
             <div class="controle">
                 <label for="titulo">TÍTULO</label>
@@ -45,7 +47,8 @@ export default {
 
   data(){
     return {
-      foto: new Foto()
+      foto: new Foto(),
+      mensagem: ''
 
     }
   },
@@ -55,8 +58,14 @@ export default {
     grava(){
 
 //console.log('formulario submetido');
-      this.$http.post('http://localhost/api-php/foto/add',this.foto)
-      .then(() => this.foto = new Foto(), err => console.log(err));
+      this.$http.post('foto/add',this.foto)
+      .then(() => {
+         this.foto = new Foto();
+         this.mensagem = 'Salvo com sucesso!';
+         }, err => {
+           this.mensagem = 'Erro ao salvar!'
+            console.log(err);
+            });
 
       console.log(this.foto);
 
