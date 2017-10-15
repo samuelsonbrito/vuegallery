@@ -11,6 +11,9 @@
 
         <meu-painel :titulo="foto.titulo">
             <imagem-responsiva :url="foto.url" :titulo="foto.titulo" v-meu-transform:scale.animacao="1.2" /> 
+            <router-link :to="{name: 'alterar', params: {id: foto.id}}">
+              <meu-botao tipo="button" rotulo="Alterar"/>
+            </router-link>
             <meu-botao tipo="button" rotulo="Remover" @botaoAtivado="remove(foto)" :confirmacao="true" estilo="perigo"/>    
         </meu-painel>
 
@@ -25,6 +28,7 @@ import Painel from '../shared/painel/Painel.vue';
 import ImagemResponsiva from '../shared/imagem-responsiva/ImagemResponsiva.vue';
 import Botao from '../shared/botao/Botao.vue';
 import Transform from '../../directives/Transform';
+import FotoService from '../../domain/foto/FotoService';
 
 export default {
 
@@ -43,7 +47,8 @@ export default {
       titulo: 'VueGallery',
       fotos: [],
       filtro: '',
-      mensagem: ''
+      mensagem: '',
+      resource: {}
     }
   },
 
@@ -60,17 +65,17 @@ export default {
 
   methods:{
 
-      remove(foto){
-    
-          this.$http.delete(`foto/delete/${foto.id}`)
-          .then(()=> {
+    remove(foto){
 
-            let indice = this.fotos.indexOf(foto);
-            this.fotos.splice(indice,1);
+      this.service
+        .apaga(foto.id)
+        .then(()=> {
+
+          let indice = this.fotos.indexOf(foto);
+          this.fotos.splice(indice,1);
+          this.mensagem = 'Foto removida com sucesso!'
             
-            this.mensagem = 'Foto removida com sucesso!'
-            
-            }, err => {
+        }, err => {
             
             this.mensagem = 'Não foi possível remover a foto!';
 
@@ -83,9 +88,13 @@ export default {
   },
 
   created(){
-    this.$http.get('http://localhost/api-php/foto/listar')
-    .then(res => res.json())
+
+    this.service = new FotoService(this.$resource);
+
+    this.service
+    .lista()
     .then(fotos => this.fotos = fotos, err => console.log(err));
+
   }
   
 }

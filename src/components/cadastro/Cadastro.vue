@@ -24,7 +24,7 @@
 
             <div class="centralizado">
                 <meu-botao rotulo="GRAVAR" tipo="submit"/>
-                <router-link to="/"><meu-botao rotulo="VOLTAR" tipo="button"/></router-link>
+                <router-link :to="{name: 'home'}"><meu-botao rotulo="VOLTAR" tipo="button"/></router-link>
             </div>
 
         </form>
@@ -36,11 +36,11 @@
 import ImagemResponsiva from '../shared/imagem-responsiva/ImagemResponsiva.vue'
 import Botao from '../shared/botao/Botao.vue';
 import Foto from '../../domain/foto/Foto';
+import FotoService from '../../domain/foto/FotoService';
 
 export default {
 
   components: {
-
     'imagem-responsiva': ImagemResponsiva, 
     'meu-botao': Botao
   },
@@ -48,7 +48,9 @@ export default {
   data(){
     return {
       foto: new Foto(),
-      mensagem: ''
+      mensagem: '',
+      resource: {},
+      id: this.$route.params.id
 
     }
   },
@@ -57,21 +59,33 @@ export default {
 
     grava(){
 
-//console.log('formulario submetido');
-      this.$http.post('foto/add',this.foto)
+      this.service.cadastra(this.foto)
       .then(() => {
          this.foto = new Foto();
          this.mensagem = 'Salvo com sucesso!';
          }, err => {
-           this.mensagem = 'Erro ao salvar!'
-            console.log(err);
-            });
+          this.mensagem = 'Erro ao salvar!'
+          console.log(err);
+      });
 
       console.log(this.foto);
 
       this.foto = new Foto()
 
 
+    }
+
+  },
+  created(){
+    this.service = new FotoService(this.$resource);
+
+    console.log(this.id);
+
+    if(this.id){
+      this.service.busca(this.id).then(foto =>{
+         this.foto = foto;
+         console.log(this.foto);
+      });
     }
 
   }
