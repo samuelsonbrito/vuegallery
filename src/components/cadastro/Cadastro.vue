@@ -3,12 +3,16 @@
         <h1 class="centralizado">Cadastro</h1>
         <h2 class="centralizado">{{foto.titulo}}</h2>
 
+         <h2 v-if="foto.id" class="centralizado">Alterando</h2>
+         <h2 v-else class="centralizado">Incluindo</h2>
+
         <p class="centralizado" v-show="mensagem">{{mensagem}}</p>
 
         <form @submit.prevent="grava()">
             <div class="controle">
                 <label for="titulo">TÍTULO</label>
-                <input id="titulo" autocomplete="off" v-model="foto.titulo">
+                <input data-vv-as="título" name="titulo" v-validate="{ required: true, min: 3, max: 30 }" id="titulo" autocomplete="off" v-model="foto.titulo">
+                <span v-show="this.errors.has('titulo')">{{ errors.first('titulo') }}</span>
             </div>
 
             <div class="controle">
@@ -59,19 +63,23 @@ export default {
 
     grava(){
 
-      this.service.cadastra(this.foto)
-      .then(() => {
-         this.foto = new Foto();
-         this.mensagem = 'Salvo com sucesso!';
-         }, err => {
-          this.mensagem = 'Erro ao salvar!'
-          console.log(err);
+      this.$validator.validateAll().then(success => {
+
+        if(success){
+
+          this.service.cadastra(this.foto)
+          .then(() => {
+            if(this.id) this.$router.push({name: "home"});
+            this.foto = new Foto();
+            this.mensagem = 'Salvo com sucesso!';
+            }, err => {
+              this.mensagem = 'Erro ao salvar!'
+              console.log(err);
+          }); 
+        
+        }
+
       });
-
-      console.log(this.foto);
-
-      this.foto = new Foto()
-
 
     }
 

@@ -77,10 +77,8 @@ export default {
             
         }, err => {
             
-            this.mensagem = 'Não foi possível remover a foto!';
-
-            console.log(err);
-            
+             this.mensagem = err.message;
+             
             });
         
       }
@@ -93,7 +91,9 @@ export default {
 
     this.service
     .lista()
-    .then(fotos => this.fotos = fotos, err => console.log(err));
+    .then(fotos => this.fotos = fotos, err => {
+      this.mensagem = err.message
+    });
 
   }
   
