@@ -5,7 +5,7 @@ import VueResource from 'vue-resource';
 import VueRouter from 'vue-router';
 import { routes } from './routes';
 import VeeValidate from 'vee-validate';
-
+import ptBR from 'vee-validate/dist/locale/pt_BR';
 Vue.use(VueResource);
 Vue.http.options.root = 'http://localhost/api-php/';
 Vue.use(VueRouter);
