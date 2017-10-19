@@ -6,10 +6,14 @@ import VueRouter from 'vue-router';
 import { routes } from './routes';
 import VeeValidate from 'vee-validate';
 import ptBR from 'vee-validate/dist/locale/pt_BR';
+import 'bootstrap/dist/css/bootstrap.css';
+import './assets/css/style.css';
+import 'jquery/dist/jquery.js';
+import 'bootstrap/dist/js/bootstrap.js';
+
 Vue.use(VueResource);
 Vue.http.options.root = 'http://localhost/api-php/';
 Vue.use(VueRouter);
-
 
 const router = new VueRouter({
   routes: routes, //ou apenas router
